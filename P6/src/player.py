@@ -1,5 +1,5 @@
 from config import BOARD_SIZE, categories, image_size
-from tensorflow.keras import models
+from keras import models
 import numpy as np
 import tensorflow as tf
 
