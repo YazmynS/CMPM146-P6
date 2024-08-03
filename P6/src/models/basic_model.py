@@ -1,6 +1,6 @@
 from models.model import Model
 from keras import Sequential, layers
-from keras.layers.preprocessing import Rescaling
+#from keras.layers.preprocessing import Rescaling
 from keras.optimizers import RMSprop, Adam
 
 class BasicModel(Model):
@@ -8,7 +8,8 @@ class BasicModel(Model):
         # you have to initialize self.model to a keras model
         self.model = Sequential([
             # Normalize the input data to the range [0, 1]
-            Rescaling(1./255, input_shape=input_shape),
+            #Rescaling(1./255, input_shape=input_shape),
+            # Commented out because its not compatible with my libary. Feel free to uncomment
             
             # First convolutional layer with 32 filters, 3x3 kernel size, and ReLU activation
             layers.Conv2D(32, (3, 3), activation='relu'),
@@ -34,4 +35,13 @@ class BasicModel(Model):
     def _compile_model(self): 
         # Your code goes here
         # you have to compile the keras model, similar to the example in the writeup
-        pass
+
+        self.model.compile(
+            optimizer=RMSprop(learning_rate=0.001), #Learning/Update Mechanism
+            loss='categorical_crossentropy',        #Error function used to drive each update
+            metrics=['accuracy'],                   #The success metric to monitor during training and testing
+        )
+
+
+
+        

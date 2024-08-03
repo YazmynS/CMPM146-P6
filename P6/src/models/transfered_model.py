@@ -29,6 +29,8 @@ class TransferedModel(Model):
         ])
     
     def _compile_model(self):
-        # Your code goes here
-        # you have to compile the keras model, similar to the example in the writeup
-        pass
+        self.model.compile(
+            optimizer=RMSprop(learning_rate=0.001), #Learning/Update Mechanism
+            loss='categorical_crossentropy',        #Error function used to drive each update
+            metrics=['accuracy'],                   #The success metric to monitor during training and testing
+        )

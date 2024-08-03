@@ -2,6 +2,7 @@ from models.model import Model
 from keras import Sequential, layers, models
 from keras.layers.preprocessing import Rescaling
 from keras.optimizers import RMSprop, Adam
+import numpy as np
 
 class RandomModel(Model):
     def _define_model(self, input_shape, categories_count): #Yazmyn Claimed Task
@@ -34,14 +35,19 @@ class RandomModel(Model):
         ])
     
     def _compile_model(self):
-        # Your code goes here
-        # you have to compile the keras model, similar to the example in the writeup
-        pass
+        self.model.compile(
+            optimizer=RMSprop(learning_rate=0.001), #Learning/Update Mechanism
+            loss='categorical_crossentropy',        #Error function used to drive each update
+            metrics=['accuracy'],                   #The success metric to monitor during training and testing
+        )
 
     @staticmethod
     def _randomize_layers(model):
-        # Your code goes here
-
+        #Randomize the weights of each layer in the model
+        for layer in model.layers:
+            original_shape = layer.bias.shape       #Im not entirely sure if its "bias" or called something else. Can't test yet
+            random_biases = np.random.standard_normal(original_shape)
+            layer.bias.assign(random_biases)
         # you can write a function here to set the weights to a random value
         # use this function in _define_model to randomize the weights of your loaded model
         pass
