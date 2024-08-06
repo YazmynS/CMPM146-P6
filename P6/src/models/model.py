@@ -14,7 +14,7 @@ class Model:
 
     def _compile_model(self):
         raise Exception("define_model not implemented yet.")
-
+    
     def train_model(self, train_dataset, validation_dataset, epochs):
         history = self.model.fit(
             x=train_dataset,
