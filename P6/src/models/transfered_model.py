@@ -1,6 +1,6 @@
 from models.model import Model
 from keras import Sequential, layers, models
-from keras.layers.preprocessing import Rescaling
+from keras.layers import Rescaling
 from keras.optimizers import RMSprop, Adam
 
 class TransferedModel(Model):
