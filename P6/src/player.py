@@ -1,5 +1,7 @@
+# player.py
+
 from config import BOARD_SIZE, categories, image_size
-from keras import models
+from tensorflow.keras import models
 import numpy as np
 import tensorflow as tf
 
@@ -93,7 +95,7 @@ class UserWebcamPlayer:
             # error accessing the webcam, or processing the image
             raise e
     
-    def _get_emotion(self, img) -> int: #Yazmyn Claimed Task
+    def _get_emotion(self, img) -> int:
         # Your code goes here
         #
         # img an np array of size NxN (square), each pixel is a value between 0 to 255
@@ -107,30 +109,10 @@ class UserWebcamPlayer:
         # The classification value should be 0, 1, or 2 for neutral, happy or surprise respectively
 
         # return an integer (0, 1 or 2), otherwise the code will throw an error
-        
-        # Resize the image to the required input size for the model
-        img_resized = cv2.resize(img, (image_size, image_size))
-
-        # Show the image
-        plt.imshow(img_resized, cmap='gray', vmin=0, vmax=255)
-        plt.show()
-
-        # Normalize the image
-        img_normalized = img_resized / 255.0
-
-        # Expand dimensions to match the model input shape (1, image_size, image_size, 1)
-        img_input = np.expand_dims(img_normalized, axis=0)
-        img_input = np.expand_dims(img_input, axis=-1)
-
-        # Load the pre-trained model
-        model = models.load_model('path_to_your_saved_model.h5')
-
-        # Predict the emotion
-        prediction = model.predict(img_input)
-        emotion = np.argmax(prediction)
-
-        return int(emotion)
-        return 1
+        img = cv2.resize(img, image_size)
+        img = img.reshape(1, *image_size, 1) / 255.0
+        prediction = self.model.predict(img)
+        return np.argmax(prediction)
     
     def get_move(self, board_state):
         row, col = None, None

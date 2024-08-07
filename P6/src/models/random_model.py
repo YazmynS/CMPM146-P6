@@ -45,10 +45,12 @@ class RandomModel(Model):
     def _randomize_layers(model):
         #Randomize the weights of each layer in the model
         for layer in model.layers:
-            if hasattr(layer, 'kernel') and layer.kernel is not None:
-                original_shape = layer.kernel.shape       #Im not entirely sure if its "kernel" or called something else. Can't test yet
-                random_biases = np.random.standard_normal(original_shape)
-                layer.kernel.assign(random_biases)
-        # you can write a function here to set the weights to a random value
-        # use this function in _define_model to randomize the weights of your loaded model
+            if hasattr(layer, 'kernel') and layer.kernel is not None:  # Check if the layer has weights (kernel)
+                original_shape = layer.kernel.shape  # Get the shape of the weights
+                random_weights = np.random.standard_normal(original_shape)  # Generate random weights
+                layer.kernel.assign(random_weights)  # Assign the random weights to the layer
+            if hasattr(layer, 'bias') and layer.bias is not None:  # Check if the layer has bias
+                original_shape = layer.bias.shape  # Get the shape of the bias
+                random_bias = np.random.standard_normal(original_shape)  # Generate random bias
+                layer.bias.assign(random_bias)
         pass
