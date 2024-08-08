@@ -43,7 +43,7 @@ import cv2
 
 class UserWebcamPlayer:
     def __init__(self):
-        self.model = models.load_model("finishedModel.keras")
+        self.model = models.load_model("testModel.keras")
 
     def _process_frame(self, frame):
         frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
@@ -114,21 +114,27 @@ class UserWebcamPlayer:
         # The classification value should be 0, 1, or 2 for neutral, happy or surprise respectively
 
         # return an integer (0, 1 or 2), otherwise the code will throw an error
-        res = cv2.resize(img, dsize=image_size, interpolation=cv2.INTER_CUBIC)
+        #res = cv2.resize(img, dsize=image_size, interpolation=cv2.INTER_CUBIC)
         # If the image is grayscale, convert it to RGB by duplicating the channels
-        if len(res.shape) == 2 or res.shape[2] == 1:
-            res = cv2.cvtColor(res, cv2.COLOR_GRAY2RGB)
+        #if len(res.shape) == 2 or res.shape[2] == 1:
+            #res = cv2.cvtColor(res, cv2.COLOR_GRAY2RGB)
 
         #x = image.img_to_array(res)
         # This one might work for you ^^^
         #x = image_utils.img_to_array(res)
 
         # Normalize the image
-        res = res / 255.0
+        #res = res / 255.0
 
-        x = np.expand_dims(res, axis=0)
+        res = cv2.resize(img, dsize=image_size)
+
+        rgb = cv2.cvtColor(res, cv2.COLOR_GRAY2RGB)
+
+        rgb = np.expand_dims(rgb, axis=0) 
+
+        #x = np.expand_dims(res, axis=0)
         #img = np.expand_dims(img, axis=-1)
-        predictions = self.model.predict(x)
+        predictions = self.model.predict(rgb)
         print(predictions)
         prediction = predictions.argmax(axis=1)[0]
         return int(prediction)
