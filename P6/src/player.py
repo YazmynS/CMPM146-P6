@@ -110,9 +110,11 @@ class UserWebcamPlayer:
 
         # return an integer (0, 1 or 2), otherwise the code will throw an error
         img = cv2.resize(img, image_size)
-        img = img.reshape(1, *image_size, 1) / 255.0
-        prediction = self.model.predict(img)
-        return np.argmax(prediction)
+        img = img / 255.0
+        img = np.expand_dims(img, axis=0)
+        img = np.expand_dims(img, axis=-1)
+        predictions = self.model.predict(img)
+        return np.argmax(predictions)
     
     def get_move(self, board_state):
         row, col = None, None
