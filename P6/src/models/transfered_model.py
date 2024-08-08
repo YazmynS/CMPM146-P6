@@ -1,9 +1,12 @@
 # models/transfered_model.py
 
 from models.model import Model
-from tensorflow.keras import Sequential, layers
-from tensorflow.keras.models import load_model
-from tensorflow.keras.optimizers import RMSprop, Adam
+#from tensorflow.keras import Sequential, layers
+#from tensorflow.keras.models import load_model
+#from tensorflow.keras.optimizers import RMSprop, Adam
+from keras import Sequential, layers
+from keras.models import load_model
+from keras.optimizers import RMSprop, Adam
 
 class TransferedModel(Model):
     def __init__(self, input_shape, categories_count):

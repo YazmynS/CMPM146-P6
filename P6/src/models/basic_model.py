@@ -1,9 +1,12 @@
 # models/basic_model.py
 
 from models.model import Model
-from tensorflow.keras import Sequential, layers
-from tensorflow.keras.layers.experimental.preprocessing import Rescaling
-from tensorflow.keras.optimizers import RMSprop, Adam
+from keras import Sequential, layers
+from keras.layers import Rescaling
+from keras.optimizers import RMSprop, Adam
+#from tensorflow.keras import Sequential, layers
+#from tensorflow.keras.layers.experimental.preprocessing import Rescaling
+#from tensorflow.keras.optimizers import RMSprop, Adam
 
 class BasicModel(Model):
     def _define_model(self, input_shape, categories_count):

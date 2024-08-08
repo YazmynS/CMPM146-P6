@@ -1,9 +1,16 @@
 # player.py
 
 from config import BOARD_SIZE, categories, image_size
-from tensorflow.keras import models
+from keras import models
+#from tensorflow.keras import models
 import numpy as np
 import tensorflow as tf
+import matplotlib.pyplot as plt
+from models.model import Model
+from keras.preprocessing import image
+from keras.utils import image_utils
+#from tensorflow.keras.preprocessing import image
+#from tensorflow.keras.utils import image_utils
 
 class TicTacToePlayer:
     def get_move(self, board_state):
@@ -35,6 +42,9 @@ from matplotlib.image import imread
 import cv2
 
 class UserWebcamPlayer:
+    def __init__(self):
+        self.model = models.load_model("finishedModel.keras")
+
     def _process_frame(self, frame):
         frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
         width, height = frame.shape
@@ -96,25 +106,32 @@ class UserWebcamPlayer:
             raise e
     
     def _get_emotion(self, img) -> int:
-        # Your code goes here
-        #
+        
         # img an np array of size NxN (square), each pixel is a value between 0 to 255
         # you have to resize this to image_size before sending to your model
-        # to show the image here, you can use:
-        # import matplotlib.pyplot as plt
-        # plt.imshow(img, cmap='gray', vmin=0, vmax=255)
-        # plt.show()
-        #
+
         # You have to use your saved model, use resized img as input, and get one classification value out of it
         # The classification value should be 0, 1, or 2 for neutral, happy or surprise respectively
 
         # return an integer (0, 1 or 2), otherwise the code will throw an error
-        img = cv2.resize(img, image_size)
-        img = img / 255.0
-        img = np.expand_dims(img, axis=0)
-        img = np.expand_dims(img, axis=-1)
-        predictions = self.model.predict(img)
-        return np.argmax(predictions)
+        res = cv2.resize(img, dsize=image_size, interpolation=cv2.INTER_CUBIC)
+        # If the image is grayscale, convert it to RGB by duplicating the channels
+        if len(res.shape) == 2 or res.shape[2] == 1:
+            res = cv2.cvtColor(res, cv2.COLOR_GRAY2RGB)
+
+        #x = image.img_to_array(res)
+        # This one might work for you ^^^
+        #x = image_utils.img_to_array(res)
+
+        # Normalize the image
+        res = res / 255.0
+
+        x = np.expand_dims(res, axis=0)
+        #img = np.expand_dims(img, axis=-1)
+        predictions = self.model.predict(x)
+        print(predictions)
+        prediction = predictions.argmax(axis=1)[0]
+        return int(prediction)
     
     def get_move(self, board_state):
         row, col = None, None
