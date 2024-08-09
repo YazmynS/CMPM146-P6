@@ -37,13 +37,14 @@ def get_transfer_datasets():
     # you can use image_dataset_from_directory, similar to how the _split_data function is using it
     transfer_train_directory = 'transfer_train'
     transfer_test_directory = 'transfer_test'
+    t_image_size = (150,150)
     
     train_dataset = image_dataset_from_directory(
         transfer_train_directory,
         label_mode='categorical',
         color_mode='rgb',
         batch_size=batch_size,
-        image_size=image_size,
+        image_size=t_image_size,
         validation_split=validation_split,
         subset="training",
         seed=47
@@ -53,7 +54,7 @@ def get_transfer_datasets():
         label_mode='categorical',
         color_mode='rgb',
         batch_size=batch_size,
-        image_size=image_size,
+        image_size=t_image_size,
         validation_split=validation_split,
         subset="validation",
         seed=47
@@ -63,7 +64,7 @@ def get_transfer_datasets():
         label_mode='categorical',
         color_mode='rgb',
         batch_size=batch_size,
-        image_size=image_size,
+        image_size=t_image_size,
         shuffle=False
     )
     

@@ -127,16 +127,10 @@ class UserWebcamPlayer:
         #res = res / 255.0
 
         res = cv2.resize(img, dsize=image_size)
-
         rgb = cv2.cvtColor(res, cv2.COLOR_GRAY2RGB)
-
-        #rgb = np.expand_dims(rgb, axis=0) 
         sampleList = np.array([rgb])
-
-        #x = np.expand_dims(res, axis=0)
-        #img = np.expand_dims(img, axis=-1)
         predictions = self.model.predict(sampleList)
-        predictions[0][1] -= .25    #happy is usually higher, so im manually decreasing it so it has to be significantly bigger to be chosen.
+        predictions[0][1] -= .2    #happy is usually higher, so im manually decreasing it so it has to be significantly bigger to be chosen.
         print(predictions)
         prediction = predictions.argmax(axis=1)[0]
         return int(prediction)
