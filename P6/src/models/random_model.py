@@ -2,6 +2,7 @@ from keras import Sequential, layers, Model
 from keras.models import load_model
 from keras.optimizers import RMSprop
 import numpy as np
+from sklearn.metrics import confusion_matrix
 
 class RandomModel:
     def __init__(self, input_shape, categories_count):
@@ -62,5 +63,8 @@ class RandomModel:
         return self.model.evaluate(test_dataset)
 
     def get_confusion_matrix(self, test_dataset):
-        # Implement confusion matrix logic here if needed
-        pass
+        prediction = self.model.predict(test_dataset)
+        labels = np.concatenate([y for x, y in test_dataset], axis=0)
+        y_pred = np.argmax(prediction, axis=-1)
+        y = np.argmax(labels, axis=-1)
+        return confusion_matrix(y, y_pred)
